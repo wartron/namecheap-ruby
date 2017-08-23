@@ -12,28 +12,28 @@ module Namecheap::API
 
   private
 
-  def base_uri
-    Namecheap.config[:sandbox] ? SANDBOX : PRODUCTION
-  end
-
-  def request(type, command, options = {})
-    endpoint = "#{params(options)}&Command=namecheap.#{command}"
-
-    HTTParty.send(type, "#{base_uri}#{endpoint}")
-  end
-
-  def params(options = {})
-    params = ''
-
-    {
-      ApiUser:  Namecheap.config[:user],
-      ApiKey:   Namecheap.config[:api_key],
-      ClientIp: Namecheap.config[:ip],
-      UserName: Namecheap.config[:user]
-    }.merge(options).each do |key, value|
-      params += "&#{key}=#{value}"
+    def base_uri
+      Namecheap.config[:sandbox] ? SANDBOX : PRODUCTION
     end
 
-    params.gsub(/^&/, '?')
-  end
+    def request(type, command, options = {})
+      endpoint = "#{params(options)}&Command=namecheap.#{command}"
+
+      HTTParty.send(type, "#{base_uri}#{endpoint}")
+    end
+
+    def params(options = {})
+      params = ''
+
+      {
+        ApiUser:  Namecheap.config[:user],
+        ApiKey:   Namecheap.config[:api_key],
+        ClientIp: Namecheap.config[:ip],
+        UserName: Namecheap.config[:user]
+      }.merge(options).each do |key, value|
+        params += "&#{key}=#{value}"
+      end
+
+      params.gsub(/^&/, '?')
+    end
 end

@@ -8,8 +8,24 @@ module Namecheap::Domain
     get 'domains.check', DomainList: domains
   end
 
-  def create(*)
-    raise 'implementation needed'
+  def create(domain, registrant_contact, tech_contact = nil, admin_contact = nil,
+             aux_contact = nil, billing_contact = nil, years = 1,
+             promo_code = nil, nameserver = nil, free_whois = true,
+             idn_code = nil, is_premium_domain = false)
+    params = { DomainName: domain, Years: years }
+    params.merge!(PromotionCode: promo_code) unless promo_code.nil?
+    params.merge!(IdnCode: idn_code) unless idn_code.nil?
+    params.merge!(AddFreeWhoisguard: (free_whois ? 'yes' : 'no')) unless free_whois.nil?
+    params.merge!(WGEnabled: (free_whois ? 'yes' : 'no')) unless free_whois.nil?
+    params.merge!(IsPremiumDomain: is_premium_domain)
+
+    params.merge!(registrant_contact.to_request_params('Registrant'))
+    params.merge!((tech_contact || registrant_contact).to_request_params('Tech'))
+    params.merge!((admin_contact || registrant_contact).to_request_params('Admin'))
+    params.merge!((aux_contact || registrant_contact).to_request_params('AuxBilling'))
+    params.merge!((billing_contact || registrant_contact).to_request_params('Billing'))
+
+    post 'domains.create', params
   end
 
   def get_contacts(domain)
