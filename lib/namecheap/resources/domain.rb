@@ -36,8 +36,13 @@ module Namecheap::Domain
     get 'domains.getInfo', DomainName: domain
   end
 
-  def get_list
-    get 'domains.getList'
+  def get_list(page=1,per_page=20,search=nil)
+    params = {
+      Page: page,
+      PageSize: per_page,
+    }
+    params.merge!(SearchTerm: search) if ! search.blank?
+    get 'domains.getList', params
   end
 
   def get_registrar_lock(domain)
