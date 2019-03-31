@@ -17,7 +17,8 @@ module Namecheap::DNS
   def set_custom(domain, nameservers)
     nameservers = nameservers.is_a?(Array) ? nameservers.join(',') : nameservers
 
-    get 'domains.dns.setCustom', split_domain(domain).merge(Nameservers: nameservers)
+    #get 'domains.dns.setCustom', split_domain(domain).merge(Nameservers: nameservers)
+    get 'domains.dns.setCustom', { DomainName: domain }.merge(Nameservers: nameservers)
   end
 
   def set_default(domain)
