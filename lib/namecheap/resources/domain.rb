@@ -36,10 +36,17 @@ module Namecheap::Domain
     get 'domains.getInfo', DomainName: domain
   end
 
-  def get_list(page=1,per_page=20,search=nil)
+  # List domains with pagination, searching, sorting, and type
+  # list_type defaults to ALL
+  #     valid ALL, EXPIRING, or EXPIRED
+  # sort_by doesnt have a Namecheap default, but we default to NAME
+  #     valid NAME, NAME_DESC, EXPIREDATE, EXPIREDATE_DESC, CREATEDATE, CREATEDATE_DESC
+  def get_list(page=1,per_page=20,search=nil,sort_by="NAME",list_type="ALL")
     params = {
+      ListType: list_type,
       Page: page,
       PageSize: per_page,
+      SortBy: sort_by,
     }
     params.merge!(SearchTerm: search) if ! search.blank?
     get 'domains.getList', params
