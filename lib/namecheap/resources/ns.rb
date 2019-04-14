@@ -20,11 +20,4 @@ module Namecheap::NS
     get 'domains.ns.update', split_domain(domain).merge(Nameserver: nameserver, OldIP: old_ip, IP: ip)
   end
 
-  private
-
-  def split_domain(domain)
-    sld, tld = domain.split('.')
-
-    { SLD: sld, TLD: tld }
-  end
 end

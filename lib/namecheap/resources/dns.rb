@@ -61,9 +61,4 @@ module Namecheap::DNS
     end
   end
 
-  def split_domain(domain)
-    sld, tld = domain.split('.')
-
-    { TLD: tld, SLD: sld }
-  end
 end

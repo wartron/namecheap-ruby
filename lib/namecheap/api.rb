@@ -10,6 +10,12 @@ module Namecheap::API
     request :post, command, options
   end
 
+  def split_domain(domain)
+    sld, tld = domain.split('.')
+
+    { SLD: sld, TLD: tld }
+  end
+
   private
 
     def base_uri
